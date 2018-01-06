@@ -1,0 +1,19 @@
+{
+  "name": "websocket",
+  "version": "1.0.0",
+  "description": "[慕课网-基于WebSocket火拼俄罗斯](https://www.imooc.com/learn/861)课程小游戏",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lirumeng/websocket.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lirumeng/websocket/issues"
+  },
+  "homepage": "https://github.com/lirumeng/websocket#readme"
+}
