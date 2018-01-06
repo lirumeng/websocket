@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket</title>
+    <script src="../libs/socket.io-2.0.3.js"></script>
+</head>
+<body>
+
+<script>
+    var socket = io('ws://localhost:3000');
+    // on (可自定义事件) 接收数据
+    socket.on('news', function (data) {
+        console.log(data);
+        socket.emit('my other event', { my: 'data' });
+    });
+</script>
+</body>
+</html>
