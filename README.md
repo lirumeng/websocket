@@ -1,7 +1,6 @@
 # 基于WebSocket的火拼俄罗斯方块
 [慕课网-基于WebSocket火拼俄罗斯](https://www.imooc.com/learn/861)课程小游戏
 
-实例效果图
 ![效果图](./static/images/20180106-123114.png)
 
 ## 必备知识
