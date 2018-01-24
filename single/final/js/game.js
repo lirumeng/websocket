@@ -2,6 +2,11 @@ var Game = function() {
     //dom元素
     var gameDiv;
     var nextDiv;
+    var timeDiv;
+    var scoreDiv;
+    var resultDiv;
+    // 分数
+    var score = 0;
     // 游戏矩阵
     var gameData = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -186,8 +191,46 @@ var Game = function() {
         refreshDiv(next.data, nextDivs);
     }
 
+    // 设置时间
+    var setTime = function(time) {
+        timeDiv.innerHTML = time;
+    }
+
+    // 加分数
+    var addScore = function(line) {
+        var s = 0;
+        switch (line) {
+            case 1:
+                s = 10;
+                break;
+            case 2:
+                s = 30;
+                beark;
+            case 3:
+                s = 60;
+                break;
+            case 4:
+                s = 100;
+                break;
+            default:
+                break;
+        }
+        score = score + s;
+        scoreDiv.innerHTML = score;
+    }
+
+    // 
+    var gameover = function(win) {
+        if (win) {
+            resultDiv.innerHTML = '你赢了';
+        } else {
+            resultDiv.innerHTML = '你输了';
+        }
+    }
+
     // 消行
     var checkClear = function() {
+        var line = 0;
         for (var i = gameData.length - 1; i >= 0; i--) {
             var clear = true;
             for (var j = 0; j < gameData[0].length; j++) {
@@ -197,6 +240,7 @@ var Game = function() {
                 }
             }
             if (clear) {
+                line = line + 1;
                 for (var m = i; m > 0; m--) {
                     for (var n = 0; n < gameData[0].length; n++) {
                         gameData[m][n] = gameData[m - 1][n];
@@ -208,6 +252,7 @@ var Game = function() {
                 i++;
             }
         }
+        return line;
     }
 
     // 判断游戏结束
@@ -222,15 +267,15 @@ var Game = function() {
     }
 
     // 初始化
-    var init = function(doms) {
+    var init = function(doms, type, dir) {
         gameDiv = doms.gameDiv;
         nextDiv = doms.nextDiv;
-        cur = SquareFactory.prototype.make(2, 2);
-        next = SquareFactory.prototype.make(3, 3);
+        timeDiv = doms.timeDiv;
+        scoreDiv = doms.scoreDiv;
+        resultDiv = doms.resultDiv;
+        next = SquareFactory.prototype.make(type, dir);
         initDiv(gameDiv, gameData, gameDivs);
         initDiv(nextDiv, next.data, nextDivs);
-        setData();
-        refreshDiv(gameData, gameDivs);
         refreshDiv(next.data, nextDivs);
     };
 
@@ -241,8 +286,11 @@ var Game = function() {
     this.right = right;
     this.rotate = rotate;
     this.fixed = fixed;
+    this.full = function() { while (down()); }
     this.performNext = performNext;
     this.checkClear = checkClear;
     this.checkGameOver = checkGameOver;
-    this.full = function() { while (down()); }
+    this.setTime = setTime;
+    this.addScore = addScore;
+    this.gameover = gameover;
 };
