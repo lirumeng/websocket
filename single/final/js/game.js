@@ -228,6 +228,21 @@ var Game = function() {
         }
     }
 
+    // 底部增加行
+    var addTailLines = function(lines) {
+        for (var i = 0; i < gameData.length - lines.length; i++) {
+            gameData[i] = gameData[i + lines.length];
+        }
+        for (var i = 0; i < lines.length; i++) {
+            gameData[gameData.length - lines.length + i] = lines[i];
+        }
+        cur.origin.x = cur.origin.x - lines.length;
+        if (cur.origin.x < 0) {
+            cur.origin.x = 0;
+        }
+        refreshDiv(gameData, gameDivs);
+    }
+
     // 消行
     var checkClear = function() {
         var line = 0;
@@ -293,4 +308,5 @@ var Game = function() {
     this.setTime = setTime;
     this.addScore = addScore;
     this.gameover = gameover;
+    this.addTailLines = addTailLines;
 };

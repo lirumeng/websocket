@@ -48,6 +48,19 @@ var Local = function() {
         }
     }
 
+    // 随机生成干扰行
+    var generateBottomLine = function(lineNum) {
+        var lines = [];
+        for (var i = 0; i < lineNum; i++) {
+            var line = [];
+            for (var j = 0; j < 10; j++) {
+                line.push(Math.ceil(Math.random() * 2 - 1));
+            }
+            lines.push(line);
+        }
+        return lines;
+    }
+
     // 计数函数
     var timeFunc = function() {
         timeCount = timeCount + 1;
@@ -55,6 +68,9 @@ var Local = function() {
             timeCount = 0;
             time = time + 1;
             game.setTime(time);
+            if (time % 10 === 0) {
+                game.addTailLines(generateBottomLine(1));
+            }
         }
     }
 
