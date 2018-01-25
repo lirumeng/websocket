@@ -86,11 +86,11 @@ var Local = function() {
     // 开始
     var start = function() {
         var doms = {
-            gameDiv: document.getElementById('game'),
-            nextDiv: document.getElementById('next'),
-            timeDiv: document.getElementById('time'),
-            scoreDiv: document.getElementById('score'),
-            resultDiv: document.getElementById('gameover')
+            gameDiv: document.getElementById('local-game'),
+            nextDiv: document.getElementById('local-next'),
+            timeDiv: document.getElementById('local-time'),
+            scoreDiv: document.getElementById('local-score'),
+            resultDiv: document.getElementById('local-gameover')
         };
         game = new Game();
         game.init(doms, generateType(), generateDir());
