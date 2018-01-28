@@ -205,7 +205,7 @@ var Game = function() {
                 break;
             case 2:
                 s = 30;
-                beark;
+                break;
             case 3:
                 s = 60;
                 break;
@@ -301,7 +301,7 @@ var Game = function() {
     this.right = right;
     this.rotate = rotate;
     this.fixed = fixed;
-    this.full = function() { while (down()); }
+    this.fall = function() { while (down()); }
     this.performNext = performNext;
     this.checkClear = checkClear;
     this.checkGameOver = checkGameOver;

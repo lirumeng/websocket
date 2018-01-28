@@ -1,9 +1,9 @@
-var Local = function() {
+var Local = function(socket) {
     // 游戏对象
     var game;
 
     // 时间间隔
-    var INTERVAL = 200;
+    var INTERVAL = 2000;
 
     // 定时器
     var timer = null;
@@ -17,14 +17,19 @@ var Local = function() {
         document.onkeydown = function(e) {
             if (e.keyCode === 38) { // up
                 game.rotate();
+                socket.emit('rotate');
             } else if (e.keyCode === 39) { //right
                 game.right();
+                socket.emit('right');
             } else if (e.keyCode === 40) { //down
                 game.down();
+                socket.emit('down');
             } else if (e.keyCode === 37) { // left
                 game.left();
+                socket.emit('left');
             } else if (e.keyCode === 32) { // space
-                game.full();
+                game.fall();
+                socket.emit('fall');
             }
         }
     }
@@ -34,17 +39,30 @@ var Local = function() {
         timeFunc();
         if (!game.down()) {
             game.fixed();
+            socket.emit('fixed');
             var line = game.checkClear();
             if (line) {
                 game.addScore(line);
+                socket.emit('line', line);
+                if (line > 1) {
+                    var bottomLines = generateBottomLine(line);
+                    socket.emit('bottomLines', bottomLines);
+                }
             }
             var gameOver = game.checkGameOver();
             if (gameOver) {
                 game.gameover(false);
+                document.getElementById('remote-gameover').innerHTML = '你赢了';
+                socket.emit('lose');
                 stop();
             } else {
-                game.performNext(generateType(), generateDir());
+                var t = generateType();
+                var d = generateDir();
+                game.performNext(t, d);
+                socket.emit('next', { type: t, dir: d });
             }
+        } else {
+            socket.emit('down');
         }
     }
 
@@ -61,16 +79,14 @@ var Local = function() {
         return lines;
     }
 
-    // 计数函数
+    // 计时函数
     var timeFunc = function() {
         timeCount = timeCount + 1;
         if (timeCount == 5) {
             timeCount = 0;
             time = time + 1;
             game.setTime(time);
-            if (time % 10 === 0) {
-                game.addTailLines(generateBottomLine(1));
-            }
+            socket.emit('time', time);
         }
     }
 
@@ -93,9 +109,15 @@ var Local = function() {
             resultDiv: document.getElementById('local-gameover')
         };
         game = new Game();
-        game.init(doms, generateType(), generateDir());
+        var type = generateType();
+        var dir = generateDir();
+        game.init(doms, type, dir);
+        socket.emit('init', { type: type, dir: dir });
         bindKeyEvent();
-        game.performNext(generateType(), generateDir());
+        var t = generateType();
+        var d = generateDir();
+        game.performNext(t, d);
+        socket.emit('next', { type: t, dir: d });
         timer = setInterval(move, INTERVAL)
     };
 
@@ -108,6 +130,24 @@ var Local = function() {
         document.onkeydown = null;
     }
 
-    // 导出API
-    this.start = start;
+    socket.on('start', function() {
+        document.getElementById('waiting').innerHTML = '';
+        start();
+    });
+
+    socket.on('lose', function() {
+        game.gameover(true);
+        stop();
+    });
+
+    socket.on('leave', function() {
+        document.getElementById('local-gameover').innerHTML = '对方掉线';
+        document.getElementById('remote-gameover').innerHTML = '已掉线';
+        stop();
+    });
+
+    socket.on('bottomLines', function(data) {
+        game.addTailLines(data);
+        socket.emit('addTailLines', data);
+    });
 }
