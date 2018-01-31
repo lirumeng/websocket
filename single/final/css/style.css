@@ -12,10 +12,7 @@
 .game {
     width: 200px;
     height: 400px;
-    background-color: #f2faff;
-    border-left: 1px solid blue;
-    border-right: 1px solid blue;
-    border-bottom: 1px solid blue;
+    background: url(../images/cube-bg.png) no-repeat;
     position: relative;
     float: left;
 }
@@ -46,15 +43,13 @@
 }
 
 .none {
-    background-color: #f2faff;
+    background: url(../images/cube-7.png) no-repeat;
 }
 
 .current {
-    background-color: pink;
-    border: 1px solid red;
+    background: url(../images/cube-1.png) no-repeat;
 }
 
 .done {
-    background-color: gray;
-    border: 1px solid black;
+    background: url(../images/cube-6.png) no-repeat;
 }

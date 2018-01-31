@@ -3,7 +3,7 @@ var Local = function(socket) {
     var game;
 
     // 时间间隔
-    var INTERVAL = 2000;
+    var INTERVAL = 500;
 
     // 定时器
     var timer = null;
@@ -82,7 +82,7 @@ var Local = function(socket) {
     // 计时函数
     var timeFunc = function() {
         timeCount = timeCount + 1;
-        if (timeCount == 5) {
+        if (timeCount == 2) {
             timeCount = 0;
             time = time + 1;
             game.setTime(time);
